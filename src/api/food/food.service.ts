@@ -17,7 +17,7 @@ export async function getFoodById(id: string) {
     return food;
 }
 
-export async function createFood(data: FoodType, ) {
+export async function createFood(data: FoodType ) {
   const restauranteId = data.restaurantsId as string;
 
   const food = await prisma.foods.create({
