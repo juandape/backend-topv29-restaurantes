@@ -6,31 +6,31 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Countries {
-  id   String @id @default(cuid())
+  id   String @id @default(cuid()) @map("_id")
   name String
 }
 
 model Cities {
-  id   String @id @default(cuid())
+  id   String @id @default(cuid()) @map("_id")
   name String
 }
 
 model Locations {
-  id   String @id @default(cuid())
+  id   String @id @default(cuid()) @map("_id")
   name String
 }
 
 model Ubications {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) @map("_id")
 }
 
 model Foods {
-  id            String       @id @default(cuid())
+  id            String       @id @default(cuid()) @map("_id")
   name          String
   price         String
   image         String
@@ -40,14 +40,14 @@ model Foods {
 }
 
 model Gallery {
-  id            String       @id @default(cuid())
+  id            String       @id @default(cuid()) @map("_id")
   name          String
   Restaurants   Restaurants? @relation(fields: [restaurantsId], references: [id])
   restaurantsId String?
 }
 
 model Restaurants {
-  id           String      @id @default(cuid())
+  id           String      @id @default(cuid()) @map("_id")
   name         String
   schedules    String
   foodtype     String
@@ -61,13 +61,13 @@ model Restaurants {
 }
 
 model Categories {
-  id         String        @id @default(cuid())
+  id         String        @id @default(cuid()) @map("_id")
   name       String
   restaurant Restaurants[]
 }
 
 model Details {
-  id         String   @id @default(cuid())
+  id         String   @id @default(cuid()) @map("_id")
   date       String   @unique
   asistentes String
   hora       String
@@ -76,11 +76,11 @@ model Details {
 }
 
 model Pedidos {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) @map("_id")
 }
 
 model User {
-  id                   String    @id @default(cuid())
+  id                   String    @id @default(cuid()) @map("_id")
   email                String    @unique
   firstName            String
   lastName             String
@@ -98,7 +98,7 @@ model User {
 
 //tabla role
 model Role {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -108,7 +108,7 @@ model Role {
 }
 
 model UserRole {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) @map("_id")
 
   // relations
   user   User   @relation(fields: [userId], references: [id])
@@ -118,13 +118,13 @@ model UserRole {
 }
 
 model Reviews {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   comment   String
   createdAt DateTime @default(now())
 }
 
 model Payments {
-  id             String  @id @default(cuid())
+  id             String  @id @default(cuid()) @map("_id")
   cardBrand      String
   cardNumber     String
   cardExpMonth   String
