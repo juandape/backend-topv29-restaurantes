@@ -32,7 +32,7 @@ model Ubications {
 model Foods {
   id            String       @id @default(cuid())
   name          String
-  price         Int
+  price         String
   image         String
   rate          String
   Restaurants   Restaurants? @relation(fields: [restaurantsId], references: [id])
@@ -133,3 +133,4 @@ model Payments {
   cardPostalCode String
   userId         String?
 }
+
