@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import { User } from './user.types';
-import { hashPassword } from '../../auth/utils/bcrypt';
+import { hashPassword, createHashToken} from '../../auth/utils/bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -16,14 +16,25 @@ export async function createUser(input: User) {
   }
 
   const hashedPassword = await hashPassword(input.password);
+  const expiresIn = Date.now() + 3_600_000 * 24; // 24 hours
 
-  const data = {
-    ...input,
-    password: hashedPassword,
-  };
 
   const user = await prisma.user.create({
-    data,
+    data:{
+      firstName: input.firstName,
+      lastName: input.lastName,
+      email: input.email,
+      avatar: input.avatar,
+      password: hashedPassword,
+      passwordResetToken: createHashToken(input.email),
+      passwordResetExpires: new Date(expiresIn), // 24 hours
+
+        roles:{
+        create:[{
+          roleId:'aacljdfgfd0jwc4f0002npd8xcvd1s5gtfv',
+        }]
+      }
+    }
   });
 
   return user;
@@ -42,8 +53,9 @@ export async function getUserById(id: string) {
 export async function getUserByEmail(email: string) {
   const user = await prisma.user.findUnique({
     where: {
-      email,
+        email,
     },
+
     include: {
       roles: {
         select: {
@@ -61,23 +73,61 @@ export async function getUserByEmail(email: string) {
 }
 
 
+export async function getUserByToken(token: string) {
+  try{
+  const user = await prisma.user.findFirst({
+      where: {
+      passwordResetToken: token,
+    },
+
+
+    include: {
+      roles:{
+        select:{
+          role: {
+            select:{
+              id:true,
+              name:true,
+              }
+            }
+          }
+        }
+
+    },
+
+  });
+
+  return user;
+
+}catch(error){
+  console.log(error)
+}
+};
+
+
 export async function deleteUser(id: string) {
   const user = await prisma.user.delete({
     where: {
       id,
     },
+    /*include: {
+      roles:true
+     },*/
   });
-
   return user;
 }
 
 export async function updateUser(data: User) {
+  try{
   const user = await prisma.user.update({
     where: {
       id: data.id,
     },
     data,
   });
-
+  console.log(data)
   return user;
+}catch(error){
+  console.log(error)
+}
 }
