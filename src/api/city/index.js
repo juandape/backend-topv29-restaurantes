@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var city_controller_1 = require("./city.controller");
+var auth_controller_1 = require("../../auth/auth.controller");
+var router = (0, express_1.Router)();
+router.get('/', city_controller_1.getAllCitiesHandler);
+router.get('/:id', city_controller_1.getCityByIdHandler);
+router.post('/', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), city_controller_1.createCityHandler);
+router.patch('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), city_controller_1.updateCityByIdHandler);
+router.delete('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), city_controller_1.deleteCityByIdHandler);
+exports.default = router;

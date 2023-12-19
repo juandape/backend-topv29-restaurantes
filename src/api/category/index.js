@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var category_controller_1 = require("./category.controller");
+var auth_controller_1 = require("../../auth/auth.controller");
+var router = (0, express_1.Router)();
+router.get('/', category_controller_1.getAllCategoriesHandler);
+router.get('/:id', category_controller_1.getCategoryByIdHandler);
+router.post('/', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), category_controller_1.createCategoryHandler);
+router.patch('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), category_controller_1.updateCategoryByIdHandler);
+router.delete('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)(['ADMINRESTAURANT']), category_controller_1.deleteCategoryByIdHandler);
+exports.default = router;
