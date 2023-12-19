@@ -1,7 +1,5 @@
 require('dotenv').config();
-
-import { server } from './app';
-
+const server = require('./server').default;
 
 function startServer() {
   const PORT = (process.env.PORT as string) || 3030;
