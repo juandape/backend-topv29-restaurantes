@@ -1,8 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { server } from './app';
-
+import { server } from '../app';
 
 function startServer() {
   const PORT = (process.env.PORT as string) || 3030;
