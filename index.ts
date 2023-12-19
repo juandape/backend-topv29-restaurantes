@@ -10,4 +10,5 @@ function startServer() {
 }
 
 setImmediate(startServer);
-export default server;
+
+module.exports = server;
