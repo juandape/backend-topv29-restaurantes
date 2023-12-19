@@ -1,11 +1,11 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-// import { server } from './app';
-const server = require('./app')
+import { server } from './app';
 
 
 function startServer() {
-  const PORT = (process.env.PORT) || 3030;
+  const PORT = (process.env.PORT as string) || 3030;
 
   server.listen(PORT, () => {
     console.info(`Server running 🤖🚀 at http://localhost:${PORT}`);
@@ -13,4 +13,4 @@ function startServer() {
 }
 
 setImmediate(startServer);
-module.exports = server;
+export default server;
